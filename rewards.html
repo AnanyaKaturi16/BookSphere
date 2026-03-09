@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSphere | Rewards</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">📘 BookSphere</div>
+        <div class="nav-right">
+            <div class="points-badge" id="userPointsDisplay">🔥 0 pts</div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="rewards-container">
+        <h1>🎁 Your Rewards</h1>
+        
+        <div class="points-summary">
+            <div class="total-points">
+                <span class="points-number" id="totalPoints">1250</span>
+                <span class="points-label">Total Points</span>
+            </div>
+            <div class="points-breakdown">
+                <div class="point-item">
+                    <span>From Exchanges</span>
+                    <span class="point-value" id="exchangePoints">450</span>
+                </div>
+                <div class="point-item">
+                    <span>From Sales</span>
+                    <span class="point-value" id="salePoints">600</span>
+                </div>
+                <div class="point-item">
+                    <span>Bonus Points</span>
+                    <span class="point-value" id="bonusPoints">200</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Available Rewards</h2>
+        <div class="rewards-grid">
+            <div class="reward-card" onclick="redeemReward(100, '10% Discount')">
+                <div class="reward-icon">🎫</div>
+                <h3>10% Discount</h3>
+                <p>On your next purchase</p>
+                <div class="reward-points">100 points</div>
+                <button class="btn-small">Redeem</button>
+            </div>
+            
+            <div class="reward-card" onclick="redeemReward(250, 'Free Delivery')">
+                <div class="reward-icon">🚚</div>
+                <h3>Free Delivery</h3>
+                <p>On any exchange</p>
+                <div class="reward-points">250 points</div>
+                <button class="btn-small">Redeem</button>
+            </div>
+            
+            <div class="reward-card" onclick="redeemReward(500, 'Featured Listing')">
+                <div class="reward-icon">⭐</div>
+                <h3>Featured Listing</h3>
+                <p>Your book gets highlighted</p>
+                <div class="reward-points">500 points</div>
+                <button class="btn-small">Redeem</button>
+            </div>
+            
+            <div class="reward-card" onclick="redeemReward(1000, 'Gold Status')">
+                <div class="reward-icon">🥇</div>
+                <h3>Gold Status</h3>
+                <p>Premium benefits for life</p>
+                <div class="reward-points">1000 points</div>
+                <button class="btn-small">Redeem</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="rewards.js"></script>
+</body>
+</html>

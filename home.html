@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSphere | Smart Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+      
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(129, 140, 248, 0.3);
+            border-radius: 50%;
+            animation: floatParticle 8s infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0.8;
+            }
+            75% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-200px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+    
+        .floating-books-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .float-book {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatBook 15s infinite;
+        }
+
+        @keyframes floatBook {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(50vh) rotate(180deg);
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+       
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            background: rgba(11, 17, 32, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 5px rgba(129,140,248,0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(129,140,248,0.6));
+            }
+        }
+
+        .search-container {
+            position: relative;
+            width: 320px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-container input {
+            width: 100%;
+            height: 40px;
+            padding: 0 14px 0 40px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            color: white;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-container input:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 20px rgba(129,140,248,0.3);
+            transform: scale(1.02);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: slideIn 0.7s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .points-badge {
+            background: linear-gradient(45deg, #f59e0b, #fbbf24);
+            color: #0b1120;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .points-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+            20%, 100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .profile-dropdown:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+
+        .user-name-text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.2);
+            color: #ef4444;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239,68,68,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239,68,68,0.3);
+        }
+
+       
+        .hero-dashboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px 20px;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-box {
+            flex: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .welcome-box h1 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient 5s ease infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+            font-size: 32px;
+            color: #818cf8;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .level-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            max-width: 350px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .level-card:hover {
+            border-color: #818cf8;
+            box-shadow: 0 10px 30px rgba(129,140,248,0.2);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            background: linear-gradient(45deg, #818cf8, #f472b6);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            animation: pulse 3s infinite;
+        }
+
+        .level-points {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .progress-container {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #818cf8, #f472b6);
+            border-radius: 10px;
+            width: 75%;
+            animation: progressPulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .level-next {
+            color: #94a3b8;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .level-next i {
+            color: #fbbf24;
+            font-size: 10px;
+            animation: spin 3s infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            flex: 1;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            animation: slideInRight 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: #818cf8;
+            box-shadow: 0 10px 30px rgba(129,140,248,0.2);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(129,140,248,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            margin-bottom: 6px;
+            animation: bounce 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .stat-card h2 {
+            font-size: 24px;
+            margin-bottom: 2px;
+            background: linear-gradient(45deg, #fff, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-card p {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .stat-trend {
+            font-size: 10px;
+            color: #10b981;
+            background: rgba(16,185,129,0.1);
+            padding: 2px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            padding: 10px 40px 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn:nth-child(1) { animation-delay: 0.1s; }
+        .action-btn:nth-child(2) { animation-delay: 0.2s; }
+        .action-btn:nth-child(3) { animation-delay: 0.3s; }
+        .action-btn:nth-child(4) { animation-delay: 0.4s; }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(129,140,248,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .action-btn:hover {
+            border-color: #818cf8;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(129,140,248,0.3);
+        }
+
+        .action-btn i {
+            color: #818cf8;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover i {
+            transform: rotate(360deg);
+        }
+
+        .container {
+            padding: 0 40px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .insight-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            animation: slideInUp 0.7s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card:nth-child(1) { animation-delay: 0.2s; }
+        .insight-card:nth-child(2) { animation-delay: 0.4s; }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            border-color: #818cf8;
+            box-shadow: 0 15px 40px rgba(129,140,248,0.2);
+        }
+
+        .insight-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s;
+        }
+
+        .insight-card:hover::after {
+            left: 100%;
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .insight-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(45deg, #818cf8, #f472b6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            animation: pulse 3s infinite;
+        }
+
+        .insight-header h3 {
+            font-size: 16px;
+        }
+
+        .match-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 16px 0;
+        }
+
+        .user-match {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .user-match img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #818cf8;
+            transition: all 0.3s;
+        }
+
+        .user-match img:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(129,140,248,0.5);
+        }
+
+        .user-match strong {
+            font-size: 13px;
+        }
+
+        .user-match em {
+            color: #818cf8;
+            font-style: normal;
+            font-size: 12px;
+        }
+
+        .match-arrow {
+            font-size: 24px;
+            color: #818cf8;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(45deg, #818cf8, #c084fc);
+            color: white;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 20px rgba(129,140,248,0.4);
+        }
+
+        .btn-small::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-small:hover::before {
+            left: 100%;
+        }
+
+        .trend-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.05);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            transform: scale(1.1) translateY(-2px);
+            background: #818cf8;
+            box-shadow: 0 5px 15px rgba(129,140,248,0.4);
+        }
+
+        .tag.hot {
+            background: linear-gradient(45deg, #f43f5e, #fb7185);
+            animation: pulse 2s infinite;
+        }
+
+        .trend-note {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* Marketplace Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            background: linear-gradient(45deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 5s ease infinite;
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #818cf8;
+            border-color: #818cf8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(129,140,248,0.3);
+        }
+
+        .filter-btn.active {
+            background: #818cf8;
+            border-color: #818cf8;
+        }
+
+        /* Book Grid */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .book-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.3s;
+            position: relative;
+            backdrop-filter: blur(10px);
+            animation: fadeInScale 0.6s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .book-card:nth-child(4n+1) { animation-delay: 0.1s; }
+        .book-card:nth-child(4n+2) { animation-delay: 0.2s; }
+        .book-card:nth-child(4n+3) { animation-delay: 0.3s; }
+        .book-card:nth-child(4n+4) { animation-delay: 0.4s; }
+
+        .book-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #818cf8;
+            box-shadow: 0 20px 40px rgba(129,140,248,0.3);
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(129,140,248,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .book-card:hover::before {
+            opacity: 1;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(45deg, #10b981, #34d399);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            z-index: 1;
+            animation: pulse 3s infinite;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .book-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .book-category {
+            color: #818cf8;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .book-card h3 {
+            font-size: 16px;
+            margin: 6px 0 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .book-author {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .book-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #34d399;
+            animation: pulse 3s infinite;
+        }
+
+        .book-points {
+            color: #818cf8;
+            font-size: 11px;
+        }
+
+        .book-rating {
+            color: #fbbf24;
+            font-size: 11px;
+        }
+
+        .book-owner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 30px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .book-owner:hover {
+            background: rgba(129,140,248,0.1);
+        }
+
+        .book-owner img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin: 0;
+            border: 1px solid #818cf8;
+        }
+
+        .book-owner span {
+            font-size: 11px;
+        }
+
+        .book-description {
+            color: #94a3b8;
+            font-size: 11px;
+            line-height: 1.4;
+            margin: 8px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-platform {
+            color: #64748b;
+            font-size: 10px;
+            margin: 6px 0;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-claim, .btn-buy, .btn-exchange {
+            flex: 1;
+            padding: 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.3s;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-claim {
+            background: linear-gradient(45deg, #818cf8, #c084fc);
+            color: white;
+        }
+
+        .btn-buy {
+            background: linear-gradient(45deg, #f59e0b, #fbbf24);
+            color: #0b1120;
+            text-decoration: none;
+        }
+
+        .btn-exchange {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #10b981;
+        }
+
+        .btn-claim:hover, .btn-buy:hover, .btn-exchange:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(129,140,248,0.3);
+        }
+
+        .btn-claim::before, .btn-buy::before, .btn-exchange::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-claim:hover::before, .btn-buy:hover::before, .btn-exchange:hover::before {
+            left: 100%;
+        }
+
+        .btn-wishlist {
+            width: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #f472b6;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-wishlist:hover {
+            background: rgba(244,114,182,0.1);
+            border-color: #f472b6;
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        /* Load More */
+        .load-more {
+            text-align: center;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-outline:hover {
+            border-color: #818cf8;
+            background: rgba(129,140,248,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(129,140,248,0.3);
+        }
+
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1e1b4b, #0f172a);
+            margin: 3% auto;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: modalSlide 0.5s;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-50px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .close:hover {
+            color: #f472b6;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            background: linear-gradient(45deg, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .modal input,
+        .modal select {
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .modal input:focus,
+        .modal select:focus {
+            border-color: #818cf8;
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.02);
+        }
+
+        .modal select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        .modal select option {
+            background: #1e1b4b;
+            color: white;
+            padding: 12px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 25px;
+            margin: 10px 0 5px;
+            padding: 5px 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 40px;
+            transition: all 0.3s;
+        }
+
+        .radio-group label:hover {
+            background: rgba(129,140,248,0.2);
+            transform: scale(1.05);
+        }
+
+        .radio-group input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            accent-color: #818cf8;
+        }
+
+        .modal .btn-claim {
+            margin-top: 10px;
+            padding: 14px;
+            font-size: 15px;
+            border-radius: 40px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            z-index: 2000;
+            animation: notificationSlide 0.5s;
+            font-size: 13px;
+        }
+
+        @keyframes notificationSlide {
+            from {
+                transform: translateX(100%) scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .notification.success {
+            background: linear-gradient(45deg, #10b981, #34d399);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #ef4444, #f87171);
+        }
+
+        .notification.info {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa);
+        }
+
+        .no-books {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            color: #94a3b8;
+        }
+
+        
+        @media (max-width: 1200px) {
+            .book-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-dashboard {
+                flex-direction: column;
+            }
+            
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 20px;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .book-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                padding: 20px;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="particles" id="particles"></div>
+    
+    
+    <div class="floating-books-bg" id="floatingBooks"></div>
+
+    <nav class="navbar">
+        <div class="logo">📘 BookSphere</div>
+        
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search millions of books..." onkeyup="searchBooks()">
+        </div>
+        
+        <div class="nav-right">
+            <div class="points-badge" id="userPointsDisplay">
+                <i class="fas fa-fire"></i>
+                <span>0 pts</span>
+            </div>
+            
+            <div class="profile-section">
+                <div class="profile-dropdown">
+                    <span id="navUserName" class="user-name-text">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-dashboard">
+        <div class="welcome-box">
+            <h1>Welcome back,<br> <span id="typingName" class="gradient-text"></span><span class="cursor">|</span></h1>
+            
+            <div class="level-card">
+                <div class="level-header">
+                    <span class="level-badge">🥈 Silver Reader</span>
+                    <span class="level-points" id="levelPoints">750/1000 pts</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar" style="width: 75%;"></div>
+                </div>
+                <p class="level-next" id="levelNext"><i class="fas fa-star"></i> 250 more points to reach Gold Reader!</p>
+            </div>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <h2 id="reuseCount">247</h2>
+                <p>Books Reused</p>
+                <span class="stat-trend">↑ +12 this week</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🌳</div>
+                <h2 id="treeCount">19</h2>
+                <p>Trees Saved</p>
+                <span class="stat-trend">🌱 3.2kg CO₂ saved</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <h2>98%</h2>
+                <p>Trust Score</p>
+                <span class="stat-trend">Top 5% of users</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="quick-actions">
+        <button class="action-btn" onclick="showAddBookModal()">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add Book</span>
+        </button>
+        <button class="action-btn" onclick="location.href='exchange.html'">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Find Exchange</span>
+        </button>
+        <button class="action-btn" onclick="location.href='wishlist.html'">
+            <i class="fas fa-heart"></i>
+            <span>Wishlist</span>
+        </button>
+        <button class="action-btn" onclick="location.href='rewards.html'">
+            <i class="fas fa-gift"></i>
+            <span>Rewards</span>
+        </button>
+    </section>
+
+    <section class="container">
+        <div class="insight-grid">
+            <div class="insight-card">
+                <div class="insight-header">
+                    <div class="insight-icon">⚡</div>
+                    <h3>Smart Exchange Match!</h3>
+                </div>
+                <div class="match-details">
+                    <div class="user-match">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <div>
+                            <strong>Rahul K.</strong><br>
+                            <em>Has "Data Structures"</em>
+                        </div>
+                    </div>
+                    <div class="match-arrow">⇄</div>
+                    <div class="user-match">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User">
+                        <div>
+                            <strong>You</strong><br>
+                            <em>Have "Java Programming"</em>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-small" onclick="connectMatch('Rahul K.', 'Data Structures', 'Java Programming')">
+                    <i class="fas fa-handshake"></i> Connect Now
+                </button>
+            </div>
+
+            <div class="insight-card">
+                <div class="insight-header">
+                    <div class="insight-icon">📈</div>
+                    <h3>Trending Categories</h3>
+                </div>
+                <div class="trend-tags">
+                    <span class="tag hot">🔥 GATE 2026</span>
+                    <span class="tag">Next.js 14</span>
+                    <span class="tag">Psychology</span>
+                    <span class="tag">Atomic Habits</span>
+                    <span class="tag">Python</span>
+                </div>
+                <p class="trend-note">📊 Based on 234 searches today</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="section-header">
+            <div>
+                <h2 class="gradient-text">📖 Live Marketplace</h2>
+                <p class="section-subtitle">Discover millions of books from around the world</p>
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="filterBooks('all')">All</button>
+                <button class="filter-btn" onclick="filterBooks('fiction')">Fiction</button>
+                <button class="filter-btn" onclick="filterBooks('selfdev')">Self Dev</button>
+                <button class="filter-btn" onclick="filterBooks('technology')">Tech</button>
+                <button class="filter-btn" onclick="filterBooks('science')">Science</button>
+                <button class="filter-btn" onclick="filterBooks('history')">History</button>
+            </div>
+        </div>
+        
+        <div class="book-grid" id="bookGrid">
+           
+        </div>
+        
+        <div class="load-more">
+            <button class="btn-outline" onclick="loadMoreBooks()" id="loadMoreBtn">Load More Books</button>
+        </div>
+    </main>
+
+   
+    <div id="addBookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>✨ Add New Book</h2>
+            <form id="addBookForm" onsubmit="addNewBook(event)">
+                <input type="text" id="bookTitle" placeholder="📖 Book Title" required>
+                <input type="text" id="bookAuthor" placeholder="✍️ Author" required>
+                
+                <select id="bookCategory" required>
+                    <option value="" disabled selected>📚 Select Category</option>
+                    <option value="fiction">Fiction & Literature</option>
+                    <option value="science">Science & Nature</option>
+                    <option value="history">History & Biography</option>
+                    <option value="technology">Technology & Programming</option>
+                    <option value="business">Business & Economics</option>
+                    <option value="selfdev">Self Development</option>
+                    <option value="academic">Academic & Textbooks</option>
+                    <option value="children">Children's Books</option>
+                </select>
+                
+                <!-- <input type="number" id="bookPrice" placeholder="💰 Price in ₹ (0 for exchange)" required> -->
+                
+                <select id="bookCondition" required>
+                    <option value="" disabled selected>📦 Select Condition</option>
+                    <option value="New">✨ New</option>
+                    <option value="Like New">🌟 Like New</option>
+                    <option value="Good">👍 Good</option>
+                    <option value="Acceptable">🆗 Acceptable</option>
+                </select>
+                
+                <input type="url" id="bookLink" placeholder="🔗 Purchase Link (Amazon/Flipkart)">
+                
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="action" value="sell" checked> 💰 Sell
+                    </label>
+                    <label>
+                        <input type="radio" name="action" value="exchange"> 🔄 Exchange
+                    </label>
+                    <label>
+                        <input type="radio" name="action" value="both"> ✨ Both
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-claim">
+                    <i class="fas fa-plus-circle"></i> Add Book & Earn 25 Points
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+       
+        let currentUser = null;
+        let allBooks = [];
+        let displayedBooks = [];
+        let currentPage = 1;
+        const booksPerPage = 12;
+        let currentFilter = 'all';
+
+       
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particle.style.animationDelay = (Math.random() * 5) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function createFloatingBooks() {
+            const booksContainer = document.getElementById('floatingBooks');
+            const bookEmojis = ['📚', '📖', '📘', '📕', '📗', '📙', '📓', '📔'];
+            
+            for (let i = 0; i < 15; i++) {
+                const book = document.createElement('div');
+                book.className = 'float-book';
+                book.innerHTML = bookEmojis[Math.floor(Math.random() * bookEmojis.length)];
+                book.style.left = Math.random() * 100 + '%';
+                book.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                book.style.animationDelay = (Math.random() * 5) + 's';
+                book.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                booksContainer.appendChild(book);
+            }
+        }
+
+       
+        const bookDatabase = [
+           
+            {
+                id: 1,
+                title: "The Silent Patient",
+                author: "Alex Michaelides",
+                category: "fiction",
+                price: "₹599",
+                points: 30,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/1250301696",
+                rating: 4.7,
+                condition: "New",
+                description: "The #1 New York Times bestseller. A woman's act of violence against her husband—and her complete refusal to speak about it.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 2,
+                title: "Where the Crawdads Sing",
+                author: "Delia Owens",
+                category: "fiction",
+                price: "₹699",
+                points: 35,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0735219095",
+                rating: 4.8,
+                condition: "New",
+                description: "A novel about a young woman who raised herself in the marshes of North Carolina.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 3,
+                title: "The Midnight Library",
+                author: "Matt Haig",
+                category: "fiction",
+                price: "₹549",
+                points: 25,
+                platform: "Flipkart",
+                link: "https://www.flipkart.com/midnight-library",
+                rating: 4.6,
+                condition: "New",
+                description: "Between life and death there is a library. A novel about the choices that go into a life.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 4,
+                title: "Dune",
+                author: "Frank Herbert",
+                category: "fiction",
+                price: "₹799",
+                points: 40,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0441172717",
+                rating: 4.9,
+                condition: "New",
+                description: "The epic science fiction novel set on the desert planet Arrakis.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 5,
+                title: "1984",
+                author: "George Orwell",
+                category: "fiction",
+                price: "₹399",
+                points: 20,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0451524934",
+                rating: 4.8,
+                condition: "Good",
+                description: "A dystopian social science fiction novel and cautionary tale.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            
+      
+            {
+                id: 6,
+                title: "Atomic Habits",
+                author: "James Clear",
+                category: "selfdev",
+                price: "Exchange",
+                points: 50,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.9,
+                owner: "Amit P.",
+                ownerImg: "https://randomuser.me/api/portraits/men/75.jpg",
+                condition: "Like New",
+                description: "An easy & proven way to build good habits and break bad ones.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 7,
+                title: "The Psychology of Money",
+                author: "Morgan Housel",
+                category: "selfdev",
+                price: "₹699",
+                points: 35,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0857197681",
+                rating: 4.8,
+                condition: "New",
+                description: "Timeless lessons on wealth, greed, and happiness.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 8,
+                title: "Think and Grow Rich",
+                author: "Napoleon Hill",
+                category: "selfdev",
+                price: "₹399",
+                points: 20,
+                platform: "Flipkart",
+                link: "https://www.flipkart.com/think-grow-rich",
+                rating: 4.7,
+                condition: "Good",
+                description: "The classic guide to financial success and personal achievement.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "sell"
+            },
+            {
+                id: 9,
+                title: "Deep Work",
+                author: "Cal Newport",
+                category: "selfdev",
+                price: "Exchange",
+                points: 40,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.6,
+                owner: "Vikram S.",
+                ownerImg: "https://randomuser.me/api/portraits/men/52.jpg",
+                condition: "Like New",
+                description: "Rules for focused success in a distracted world.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 10,
+                title: "The 7 Habits of Highly Effective People",
+                author: "Stephen Covey",
+                category: "selfdev",
+                price: "₹849",
+                points: 42,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/1982137274",
+                rating: 4.8,
+                condition: "New",
+                description: "Powerful lessons in personal change and effectiveness.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+
+          
+            {
+                id: 11,
+                title: "Clean Code",
+                author: "Robert C. Martin",
+                category: "technology",
+                price: "Exchange",
+                points: 45,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.8,
+                owner: "Rahul K.",
+                ownerImg: "https://randomuser.me/api/portraits/men/32.jpg",
+                condition: "Like New",
+                description: "A handbook of agile software craftsmanship.",
+                image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400",
+                type: "exchange"
+            },
+            {
+                id: 12,
+                title: "The Pragmatic Programmer",
+                author: "David Thomas",
+                category: "technology",
+                price: "₹2,999",
+                points: 0,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/020161622X",
+                rating: 4.9,
+                condition: "New",
+                description: "Your journey to mastery in software development.",
+                image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400",
+                type: "buy"
+            },
+            {
+                id: 13,
+                title: "Introduction to Algorithms",
+                author: "CLRS",
+                category: "technology",
+                price: "₹4,999",
+                points: 0,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0262033844",
+                rating: 4.7,
+                condition: "New",
+                description: "The classic algorithms textbook used worldwide.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 14,
+                title: "Design Patterns",
+                author: "Gang of Four",
+                category: "technology",
+                price: "Exchange",
+                points: 40,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.6,
+                owner: "Neha M.",
+                ownerImg: "https://randomuser.me/api/portraits/women/68.jpg",
+                condition: "Good",
+                description: "Elements of reusable object-oriented software.",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 15,
+                title: "JavaScript: The Good Parts",
+                author: "Douglas Crockford",
+                category: "technology",
+                price: "₹1,999",
+                points: 0,
+                platform: "Flipkart",
+                link: "https://www.flipkart.com/javascript-good-parts",
+                rating: 4.5,
+                condition: "Good",
+                description: "Unearthing the excellence in JavaScript.",
+                image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400",
+                type: "sell"
+            },
+
+           
+            {
+                id: 16,
+                title: "A Brief History of Time",
+                author: "Stephen Hawking",
+                category: "science",
+                price: "₹849",
+                points: 42,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0553380168",
+                rating: 4.8,
+                condition: "New",
+                description: "From the Big Bang to black holes - a journey through space and time.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 17,
+                title: "Sapiens",
+                author: "Yuval Noah Harari",
+                category: "science",
+                price: "₹699",
+                points: 35,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0062316095",
+                rating: 4.8,
+                condition: "New",
+                description: "A brief history of humankind from the Stone Age to the modern age.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 18,
+                title: "The Selfish Gene",
+                author: "Richard Dawkins",
+                category: "science",
+                price: "Exchange",
+                points: 38,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.7,
+                owner: "Priya S.",
+                ownerImg: "https://randomuser.me/api/portraits/women/44.jpg",
+                condition: "Good",
+                description: "The classic book on evolution and natural selection.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 19,
+                title: "Cosmos",
+                author: "Carl Sagan",
+                category: "science",
+                price: "₹999",
+                points: 50,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0345331354",
+                rating: 4.9,
+                condition: "New",
+                description: "A journey through the universe and our place in it.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+
+           
+            {
+                id: 20,
+                title: "The History of India",
+                author: "Romila Thapar",
+                category: "history",
+                price: "₹1,199",
+                points: 60,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0140138358",
+                rating: 4.6,
+                condition: "New",
+                description: "Early India: From the Origins to AD 1300.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 21,
+                title: "Guns, Germs, and Steel",
+                author: "Jared Diamond",
+                category: "history",
+                price: "Exchange",
+                points: 55,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.8,
+                owner: "Arun K.",
+                ownerImg: "https://randomuser.me/api/portraits/men/42.jpg",
+                condition: "Good",
+                description: "The fates of human societies throughout history.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 22,
+                title: "The Silk Roads",
+                author: "Peter Frankopan",
+                category: "history",
+                price: "₹899",
+                points: 45,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/1101912375",
+                rating: 4.7,
+                condition: "New",
+                description: "A new history of the world through the lens of the Silk Roads.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+
+            {
+                id: 23,
+                title: "Zero to One",
+                author: "Peter Thiel",
+                category: "business",
+                price: "₹799",
+                points: 40,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0804139296",
+                rating: 4.7,
+                condition: "New",
+                description: "Notes on startups, or how to build the future.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 24,
+                title: "The Lean Startup",
+                author: "Eric Ries",
+                category: "business",
+                price: "Exchange",
+                points: 35,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.6,
+                owner: "Sneha R.",
+                ownerImg: "https://randomuser.me/api/portraits/women/63.jpg",
+                condition: "Good",
+                description: "How today's entrepreneurs use continuous innovation.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 25,
+                title: "Good to Great",
+                author: "Jim Collins",
+                category: "business",
+                price: "₹899",
+                points: 45,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0066620996",
+                rating: 4.7,
+                condition: "New",
+                description: "Why some companies make the leap and others don't.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+
+            {
+                id: 26,
+                title: "GATE CSE 2026",
+                author: "Made Easy",
+                category: "academic",
+                price: "₹1,299",
+                points: 65,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/B08XYZ1234",
+                rating: 4.5,
+                condition: "New",
+                description: "Complete guide for GATE Computer Science.",
+                image: "https://images.unsplash.com/photo-1497633762265-9d0f5d5f7b8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 27,
+                title: "NCERT Physics Class 12",
+                author: "NCERT",
+                category: "academic",
+                price: "₹299",
+                points: 15,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/8174506314",
+                rating: 4.7,
+                condition: "Good",
+                description: "Standard physics textbook for CBSE.",
+                image: "https://images.unsplash.com/photo-1497633762265-9d0f5d5f7b8c?w=400",
+                type: "sell"
+            },
+            {
+                id: 28,
+                title: "Organic Chemistry",
+                author: "Morrison & Boyd",
+                category: "academic",
+                price: "Exchange",
+                points: 50,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.6,
+                owner: "ChemistryProf",
+                ownerImg: "https://randomuser.me/api/portraits/men/22.jpg",
+                condition: "Good",
+                description: "Comprehensive organic chemistry textbook.",
+                image: "https://images.unsplash.com/photo-1497633762265-9d0f5d5f7b8c?w=400",
+                type: "exchange"
+            },
+
+    
+            {
+                id: 29,
+                title: "Harry Potter and the Sorcerer's Stone",
+                author: "J.K. Rowling",
+                category: "children",
+                price: "₹599",
+                points: 30,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/059035342X",
+                rating: 4.9,
+                condition: "New",
+                description: "The beginning of the magical journey at Hogwarts.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "buy"
+            },
+            {
+                id: 30,
+                title: "The Very Hungry Caterpillar",
+                author: "Eric Carle",
+                category: "children",
+                price: "Exchange",
+                points: 20,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.8,
+                owner: "Parent123",
+                ownerImg: "https://randomuser.me/api/portraits/women/33.jpg",
+                condition: "Good",
+                description: "A classic children's picture book.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+
+          
+            {
+                id: 31,
+                title: "Meditations",
+                author: "Marcus Aurelius",
+                category: "philosophy",
+                price: "Exchange",
+                points: 35,
+                platform: "Exchange Only",
+                link: "#",
+                rating: 4.8,
+                owner: "StoicReader",
+                ownerImg: "https://randomuser.me/api/portraits/men/62.jpg",
+                condition: "Good",
+                description: "Personal writings of the Roman emperor on Stoic philosophy.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "exchange"
+            },
+            {
+                id: 32,
+                title: "The Republic",
+                author: "Plato",
+                category: "philosophy",
+                price: "₹449",
+                points: 22,
+                platform: "Amazon",
+                link: "https://www.amazon.com/dp/0140455115",
+                rating: 4.6,
+                condition: "Good",
+                description: "Plato's famous dialogue on justice and the ideal state.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+                type: "sell"
+            }
+        ];
+
+      
+        allBooks = [...bookDatabase];
+
+    
+        function loadUserData() {
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+                document.getElementById('navUserName').textContent = currentUser.name || 'User';
+                document.getElementById('userPointsDisplay').innerHTML = `<i class="fas fa-fire"></i> ${currentUser.points || 0} pts`;
+                startTypingEffect(currentUser.name || 'Explorer');
+                updateLevelDisplay();
+            }
+        }
+
+     
+        function updateLevelDisplay() {
+            const points = currentUser?.points || 0;
+            if (points >= 1000) {
+                document.querySelector('.level-badge').innerHTML = '🥇 Gold Reader';
+                document.getElementById('levelPoints').innerHTML = `${points}/1000 pts`;
+                document.getElementById('progressBar').style.width = '100%';
+                document.getElementById('levelNext').innerHTML = '<i class="fas fa-star"></i> You are a Gold Reader!';
+            } else if (points >= 500) {
+                document.querySelector('.level-badge').innerHTML = '🥈 Silver Reader';
+                document.getElementById('levelPoints').innerHTML = `${points}/1000 pts`;
+                document.getElementById('progressBar').style.width = `${(points/1000)*100}%`;
+                document.getElementById('levelNext').innerHTML = `<i class="fas fa-star"></i> ${1000-points} more points to reach Gold Reader!`;
+            } else {
+                document.querySelector('.level-badge').innerHTML = '🥉 Bronze Reader';
+                document.getElementById('levelPoints').innerHTML = `${points}/500 pts`;
+                document.getElementById('progressBar').style.width = `${(points/500)*100}%`;
+                document.getElementById('levelNext').innerHTML = `<i class="fas fa-star"></i> ${500-points} more points to reach Silver Reader!`;
+            }
+        }
+
+      
+        function startTypingEffect(name) {
+            const target = document.getElementById('typingName');
+            if (!target) return;
+            target.innerHTML = '';
+            let i = 0;
+            function typeWriter() {
+                if (i < name.length) {
+                    target.innerHTML += name.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            typeWriter();
+        }
+
+     
+        function logout() {
+            localStorage.setItem('isLoggedIn', 'false');
+            window.location.href = 'index.html';
+        }
+
+    
+        function renderBooks() {
+            const grid = document.getElementById('bookGrid');
+            if (!grid) return;
+
+            let filteredBooks = allBooks;
+            if (currentFilter !== 'all') {
+                filteredBooks = allBooks.filter(book => 
+                    book.category.toLowerCase().includes(currentFilter.toLowerCase())
+                );
+            }
+
+            const startIndex = 0;
+            const endIndex = currentPage * booksPerPage;
+            displayedBooks = filteredBooks.slice(startIndex, endIndex);
+
+            if (displayedBooks.length === 0) {
+                grid.innerHTML = '<div class="no-books">📚 No books found in this category</div>';
+                return;
+            }
+
+            grid.innerHTML = displayedBooks.map(book => {
+                let actionButtons = '';
+                
+                if (book.type === 'exchange') {
+                    actionButtons = `
+                        <button class="btn-claim" onclick="claimBook(${book.id})">
+                            <i class="fas fa-hand-holding-heart"></i> Claim & Earn ${book.points} pts
+                        </button>
+                        <button class="btn-wishlist" onclick="addToWishlist(${book.id})">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    `;
+                } else if (book.type === 'sell') {
+                    actionButtons = `
+                        <button class="btn-claim" onclick="claimBook(${book.id})">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </button>
+                        <button class="btn-wishlist" onclick="addToWishlist(${book.id})">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    `;
+                } else {
+                    actionButtons = `
+                        <a href="${book.link}" target="_blank" class="btn-buy">
+                            <i class="fas fa-shopping-cart"></i> Buy on ${book.platform}
+                        </a>
+                        <button class="btn-wishlist" onclick="addToWishlist(${book.id})">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    `;
+                }
+
+                return `
+                    <div class="book-card">
+                        <div class="book-badge">${book.condition}</div>
+                        <img src="${book.image}" alt="${book.title}">
+                        <div class="book-info">
+                            <span class="book-category">${book.category.toUpperCase()}</span>
+                            <h3>${book.title.substring(0, 30)}${book.title.length > 30 ? '...' : ''}</h3>
+                            <p class="book-author">${book.author.substring(0, 25)}${book.author.length > 25 ? '...' : ''}</p>
+                            <div class="book-meta">
+                                <span class="book-price">${book.price}</span>
+                                ${book.points ? `<span class="book-points">🎯 ${book.points} pts</span>` : ''}
+                                <span class="book-rating">⭐ ${book.rating}</span>
+                            </div>
+                            ${book.owner ? `
+                                <div class="book-owner">
+                                    <img src="${book.ownerImg}" alt="${book.owner}">
+                                    <span>${book.owner}</span>
+                                </div>
+                            ` : ''}
+                            <p class="book-description">${book.description.substring(0, 60)}...</p>
+                            <div class="book-actions">
+                                ${actionButtons}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('loadMoreBtn').style.display = 
+                filteredBooks.length > displayedBooks.length ? 'inline-block' : 'none';
+        }
+
+     
+        function filterBooks(category) {
+            currentFilter = category;
+            currentPage = 1;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderBooks();
+        }
+
+       
+        function searchBooks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (searchTerm.length < 2) {
+                renderBooks();
+                return;
+            }
+
+            const filtered = allBooks.filter(book => 
+                book.title.toLowerCase().includes(searchTerm) ||
+                book.author.toLowerCase().includes(searchTerm) ||
+                book.category.toLowerCase().includes(searchTerm) ||
+                book.description.toLowerCase().includes(searchTerm)
+            );
+
+            const grid = document.getElementById('bookGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="no-books">📚 No books found. Try a different search!</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(book => `
+                <div class="book-card">
+                    <img src="${book.image}" alt="${book.title}">
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p class="book-author">${book.author}</p>
+                        <div class="book-meta">
+                            <span class="book-price">${book.price}</span>
+                            <span class="book-rating">⭐ ${book.rating}</span>
+                        </div>
+                        ${book.type === 'buy' ? 
+                            `<a href="${book.link}" target="_blank" class="btn-buy">Buy Now</a>` :
+                            `<button class="btn-claim" onclick="claimBook(${book.id})">Claim</button>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadMoreBooks() {
+            currentPage++;
+            renderBooks();
+        }
+
+    
+        function claimBook(bookId) {
+            const book = allBooks.find(b => b.id === bookId);
+            
+            if (currentUser) {
+                if (book.points) {
+                    currentUser.points = (currentUser.points || 0) + book.points;
+                } else {
+                    currentUser.points = (currentUser.points || 0) + 10;
+                }
+                
+                localStorage.setItem('userData', JSON.stringify(currentUser));
+                document.getElementById('userPointsDisplay').innerHTML = `<i class="fas fa-fire"></i> ${currentUser.points} pts`;
+               
+                document.getElementById('reuseCount').textContent = 
+                    parseInt(document.getElementById('reuseCount').textContent) + 1;
+                
+                
+                document.getElementById('treeCount').textContent = 
+                    (parseFloat(document.getElementById('treeCount').textContent) + 0.1).toFixed(1);
+                
+                updateLevelDisplay();
+                
+                showNotification(`✅ You claimed "${book.title}"! You earned ${book.points || 10} points!`, 'success');
+            }
+        }
+
+
+        function addToWishlist(bookId) {
+            const book = allBooks.find(b => b.id === bookId);
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            
+            if (!wishlist.find(b => b.id === bookId)) {
+                wishlist.push(book);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                showNotification(`❤️ Added "${book.title}" to wishlist!`, 'success');
+            } else {
+                showNotification('Book already in wishlist!', 'info');
+            }
+        }
+
+        function connectMatch(user, hasBook, needsBook) {
+            showNotification(`🔗 Connection request sent to ${user} for exchanging "${hasBook}" with "${needsBook}"!`, 'success');
+            
+            if (currentUser) {
+                currentUser.points = (currentUser.points || 0) + 10;
+                localStorage.setItem('userData', JSON.stringify(currentUser));
+                document.getElementById('userPointsDisplay').innerHTML = `<i class="fas fa-fire"></i> ${currentUser.points} pts`;
+                updateLevelDisplay();
+            }
+        }
+
+        
+        function addNewBook(event) {
+            event.preventDefault();
+            
+            const action = document.querySelector('input[name="action"]:checked').value;
+            
+            const newBook = {
+                id: allBooks.length + 1,
+                title: document.getElementById('bookTitle').value,
+                author: document.getElementById('bookAuthor').value,
+                category: document.getElementById('bookCategory').value,
+                price: action === 'exchange' ? 'Exchange' : '₹' + document.getElementById('bookPrice').value,
+                points: action === 'exchange' ? 25 : 0,
+                platform: action === 'sell' ? 'User Listed' : 'Exchange Only',
+                link: document.getElementById('bookLink').value || '#',
+                rating: '5.0',
+                condition: document.getElementById('bookCondition').value,
+                description: 'Newly listed book',
+                image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400',
+                type: action === 'exchange' ? 'exchange' : 'sell',
+                owner: currentUser?.name || 'You',
+                ownerImg: 'https://randomuser.me/api/portraits/lego/1.jpg'
+            };
+
+            allBooks.unshift(newBook);
+            
+            if (currentUser) {
+                currentUser.points = (currentUser.points || 0) + 25;
+                localStorage.setItem('userData', JSON.stringify(currentUser));
+                document.getElementById('userPointsDisplay').innerHTML = `<i class="fas fa-fire"></i> ${currentUser.points} pts`;
+                updateLevelDisplay();
+            }
+
+            document.getElementById('reuseCount').textContent = 
+                parseInt(document.getElementById('reuseCount').textContent) + 1;
+
+            showNotification('✅ Book added successfully! You earned 25 points!', 'success');
+            
+            closeModal();
+            document.getElementById('addBookForm').reset();
+            renderBooks();
+        }
+
+      
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function showAddBookModal() {
+            document.getElementById('addBookModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('addBookModal').style.display = 'none';
+        }
+
+        window.onload = function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            createParticles();
+            createFloatingBooks();
+            loadUserData();
+            renderBooks();
+        };
+
+      
+        window.onclick = function(event) {
+            const modal = document.getElementById('addBookModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>

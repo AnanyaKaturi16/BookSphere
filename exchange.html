@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSphere | Smart Exchange</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">📘 BookSphere</div>
+        <div class="nav-right">
+            <div class="points-badge" id="userPointsDisplay">🔥 0 pts</div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="exchange-container">
+        <h1 class="page-title">🔄 Smart Exchange Matching</h1>
+        
+        <div class="exchange-inputs">
+            <div class="exchange-card">
+                <h3>Books You Have</h3>
+                <div class="book-input-area" id="haveBooks">
+                    <div class="book-tag">Clean Code <i class="fas fa-times" onclick="removeBook(this)"></i></div>
+                </div>
+                <div class="add-book-input">
+                    <input type="text" id="haveBookInput" placeholder="Enter book title...">
+                    <button onclick="addHaveBook()">+ Add</button>
+                </div>
+            </div>
+
+            <div class="exchange-arrow">⇄</div>
+
+            <div class="exchange-card">
+                <h3>Books You Need</h3>
+                <div class="book-input-area" id="needBooks">
+                    <div class="book-tag">Design Patterns <i class="fas fa-times" onclick="removeBook(this)"></i></div>
+                </div>
+                <div class="add-book-input">
+                    <input type="text" id="needBookInput" placeholder="Enter book title...">
+                    <button onclick="addNeedBook()">+ Add</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-primary btn-large find-match-btn" onclick="findMatches()">
+            <i class="fas fa-search"></i> Find Smart Matches
+        </button>
+
+        <div id="matchResults" class="match-results"></div>
+    </div>
+
+    <script src="exchange.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSphere | My Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">📘 BookSphere</div>
+        <div class="nav-right">
+            <div class="points-badge">🔥 1250 pts</div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+                <div class="level-badge">🥈 Silver Reader</div>
+            </div>
+            <div class="profile-info">
+                <h1 id="profileName">Loading...</h1>
+                <p class="profile-email" id="profileEmail"></p>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span class="stat-value" id="totalExchanges">12</span>
+                        <span>Exchanges</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="stat-value" id="totalSales">8</span>
+                        <span>Sales</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="stat-value" id="totalBooks">20</span>
+                        <span>Books</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-tabs">
+            <button class="tab-btn active" onclick="showTab('books')">My Books</button>
+            <button class="tab-btn" onclick="showTab('reviews')">Reviews</button>
+            <button class="tab-btn" onclick="showTab('history')">History</button>
+        </div>
+
+        <div id="booksTab" class="tab-content active">
+            <div class="book-grid" id="userBooksGrid"></div>
+        </div>
+        
+        <div id="reviewsTab" class="tab-content">
+            <div class="reviews-list" id="reviewsList"></div>
+        </div>
+        
+        <div id="historyTab" class="tab-content">
+            <div class="history-list" id="historyList"></div>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>
