@@ -213,7 +213,7 @@ git init
 git add .
 git commit -m "🎉 Initial release: BookSphere is live!"
 git branch -M main
-git remote add origin [https://github.com/yourusername/booksphere.git](https://github.com/AnanyaKaturi16/BookSphere)
+git remote add origin https://github.com/AnanyaKaturi16/BookSphere
 git push -u origin main
 
 # Updates later
@@ -229,4 +229,5 @@ git push
 ### 🌟 **Join 10,000+ happy readers!** 🌟
 
 </div>
+
 
