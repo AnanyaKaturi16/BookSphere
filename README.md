@@ -158,18 +158,6 @@ BookSphere is a **super cool platform** where book lovers can:
 
 ---
 
-## 🤝 Let's Connect!
-
-<div align="center">
-
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/yourhandle)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/yourhandle)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:youremail@gmail.com)
-
-</div>
-
----
 
 ## 🌈 Made With Love
 
@@ -177,54 +165,15 @@ BookSphere is a **super cool platform** where book lovers can:
 
 ### *"Because every book deserves a second home"* 📖
 
-**⭐ Star this repo if you love books! ⭐**
-
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/booksphere?style=social)](https://github.com/yourusername/booksphere/stargazers)
-
 ---
 
-### 🚀 Ready to start your book journey?
 
-[![Get Started](https://img.shields.io/badge/GET%20STARTED-Click%20Here-brightgreen?style=for-the-badge)](https://yourusername.github.io/booksphere)
-
-</div>
-
----
-
-## 📝 License
-
-Free to use, share, and improve! MIT License 🎉
-
----
-
-<div align="center">
-  
 ### *Happy Reading!* 📚✨
 
 </div>
 
 ---
 
-## 🎯 Quick Git Commands
-
-```bash
-# First time setup
-git init
-git add .
-git commit -m "🎉 Initial release: BookSphere is live!"
-git branch -M main
-git remote add origin https://github.com/AnanyaKaturi16/BookSphere
-git push -u origin main
-
-# Updates later
-git add .
-git commit -m "✨ Added awesome new feature"
-git push
-```
-
----
-
-<div align="center">
   
 ### 🌟 **Join 10,000+ happy readers!** 🌟
 
