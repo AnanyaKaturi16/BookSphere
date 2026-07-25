@@ -176,7 +176,7 @@ BookSphere is a **super cool platform** where book lovers can:
 
   
 ### 🌟 **Join 10,000+ happy readers!** 🌟
-
+Check live: https://booksphere-kappa.vercel.app/
 </div>
 
 
